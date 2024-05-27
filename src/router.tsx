@@ -3,9 +3,8 @@ import Auth from "./components/authentication/Auth";
 import Dashboard from "./layouts/Dashboard";
 import NonAuth from "./layouts/NonAuth";
 import Root from "./layouts/Root";
-import CustomerPage from "./pages/customer/customer";
+import CartPage from "./pages/customer/cart";
 import HomePage from "./pages/HomePage";
-import ProductPage from "./pages/product/product";
 
 export const router = createBrowserRouter([
   {
@@ -17,16 +16,12 @@ export const router = createBrowserRouter([
         element: <Dashboard />,
         children: [
           {
-            path: ":storeId",
+            path: "",
             element: <HomePage />,
           },
           {
-            path: ":storeId/products",
-            element: <ProductPage />,
-          },
-          {
-            path: ":storeId/customers",
-            element: <CustomerPage />,
+            path: "/cart",
+            element: <CartPage />,
           },
         ],
       },

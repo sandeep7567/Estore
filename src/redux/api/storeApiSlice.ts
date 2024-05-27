@@ -22,7 +22,19 @@ export const storeApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Auth", "Store"],
     }),
+    getStores: builder.query({
+      query: () => ({
+        url: "store",
+        method: "GET",
+        credentials: "include" as const,
+      }),
+      providesTags: ["Product", "Store"],
+    }),
   }),
 });
 
-export const { useCreateStoreMutation, useUpdateStoreMutation } = storeApiSlice;
+export const {
+  useCreateStoreMutation,
+  useUpdateStoreMutation,
+  useGetStoresQuery,
+} = storeApiSlice;

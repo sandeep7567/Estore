@@ -1,15 +1,26 @@
-import NoDataPage from "@/components/layout/NoDataPage";
-import { Button } from "@/components/ui/button";
+import { ProductsList } from "@/components/product/product-list";
+import { useFetchProducts } from "@/hooks/product/useFetchProducts";
 
 function HomePage() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const storeId = urlParams.get("storeId");
+
+  const { products } = useFetchProducts({
+    storeId: storeId!,
+  });
+
+  const formmatedProducts = products.map((product) => ({
+    ...product,
+    price: product.price / 100,
+  }));
   return (
-    <NoDataPage
-      description="You have no products"
-      info="You can start selling as soon as you add a product."
-      title="Dashboard"
-    >
-      <Button>Create Dashboard</Button>
-    </NoDataPage>
+    <div className="mx-auto max-w-7x">
+      <div className="space-y-10 pb-10">
+        <div className="flex flex-col gap-y-8 px-4 sm:px-6 lg:px-8">
+          <ProductsList title="Products" items={formmatedProducts} />
+        </div>
+      </div>
+    </div>
   );
 }
 

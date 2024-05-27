@@ -1,16 +1,19 @@
 import Header from "@/components/dashboard/Header";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { useFetchStores } from "@/hooks/store/useFetchStores";
 import { useLogoutMutation } from "@/redux/api/apiSlice";
 import { onClose } from "@/redux/reducer/storeSlice";
-import { Home, Package2, ShoppingCart } from "lucide-react";
-import React, { useEffect } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Home, ShoppingCart } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 
 const Dashboard = () => {
   const { user } = useAppSelector((state) => state.auth);
+  const { cartItems } = useAppSelector((state) => state.cart);
   const location = useLocation();
   const dispatch = useAppDispatch();
+  const { stores, isStoresLoading, isStoresError } = useFetchStores();
 
   const navLinks = [
     {
@@ -24,10 +27,11 @@ const Dashboard = () => {
       icon: ShoppingCart,
       label: "Cart",
       active: location.pathname === `/cart`,
+      badgeCount: cartItems.length,
     },
   ];
 
-  const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false);
+  const [showNewTeamDialog, setShowNewTeamDialog] = useState(false);
 
   const [logout, { isLoading }] = useLogoutMutation();
 
@@ -47,19 +51,16 @@ const Dashboard = () => {
     }
   }, [dispatch, user]);
 
-  const stores = [{ _id: "1", name: "Dashboard" }];
+  if (isStoresLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isStoresError) {
+    return <div>Error: {"An unknown error occurred"}</div>; // Handle potential null value
+  }
 
   return (
-    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[250px_1fr]">
-      <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-        <Link
-          to="/"
-          className="flex text-primary items-center gap-2 font-semibold"
-        >
-          <Package2 className="h-6 w-6" />
-          <span className="">Dashboard CMS</span>
-        </Link>
-      </div>
+    <div id="1" className="grid min-h-screen w-full">
       <div className="flex flex-col">
         <Header
           stores={stores}

@@ -1,12 +1,12 @@
 import {
-  Badge,
   CheckIcon,
   ChevronsUpDown,
   CircleUser,
   LucideIcon,
   Menu,
+  Package2,
 } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -27,7 +27,7 @@ import {
 
 import { cn } from "@/lib/utils";
 import { Store, User } from "@/types";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import {
   Command,
@@ -72,20 +72,28 @@ const Header: React.FC<HeaderProps> = ({
   disabled,
   stores,
 }) => {
-  const formmatedStore = stores.map((store) => ({
-    label: "Teams",
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const formmatedStore = stores?.map((store) => ({
+    label: store.name,
     teams: [
       {
-        label: store.name,
-        value: store._id,
+        name: store.name,
+        _id: store._id,
       },
     ],
   }));
   type Team = (typeof formmatedStore)[number]["teams"][number];
   const [open, setOpen] = React.useState(false);
-  const [selectedTeam, setSelectedTeam] = React.useState<Team>(
+  const [selectedStore, setSelectedStore] = React.useState<Team>(
     formmatedStore?.[0].teams?.[0]
   );
+
+  useEffect(() => {
+    if (pathname === "/" && selectedStore._id) {
+      navigate(`/?storeId=${selectedStore._id}`);
+    }
+  }, [pathname, selectedStore._id, navigate, selectedStore.name]);
 
   return (
     <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
@@ -101,7 +109,7 @@ const Header: React.FC<HeaderProps> = ({
             {navLinks.map((link, index) => (
               <NavLink
                 key={index}
-                to={link.to}
+                to={`${link.to}/?storeId=${selectedStore._id}`}
                 icon={link.icon}
                 label={link.label}
                 badgeCount={link.badgeCount}
@@ -111,81 +119,92 @@ const Header: React.FC<HeaderProps> = ({
           </nav>
         </SheetContent>
       </Sheet>
+      <div className="hidden md:flex h-14 bg-muted/40 items-center border-b px-4 lg:h-[60px] lg:px-6">
+        <Link
+          to="/"
+          className="flex text-primary items-center gap-2 font-semibold"
+        >
+          <Package2 className="h-6 w-6" />
+          <span>Store: {stores?.[0].name}</span>
+        </Link>
+      </div>
       <div className="w-full flex-1">
         {/* Store Switcher */}
-        <Dialog open={showNewTeamDialog} onOpenChange={setShowNewTeamDialog}>
-          <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                role="combobox"
-                aria-expanded={open}
-                aria-label="Select a team"
-                className={cn("w-[200px] justify-between")}
-              >
-                <Avatar className="mr-2 h-5 w-5">
-                  <AvatarImage
-                    src={`https://avatar.vercel.sh/${selectedTeam.value}.png`}
-                    alt={selectedTeam.label}
-                    className="grayscale"
-                  />
-                  <AvatarFallback>SC</AvatarFallback>
-                </Avatar>
-                {selectedTeam.label}
-                <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-[200px] p-0">
-              <Command>
-                <CommandList>
-                  <CommandInput placeholder="Search team..." />
-                  <CommandEmpty>No team found.</CommandEmpty>
-                  {formmatedStore.map((store) => (
-                    <CommandGroup key={store.label} heading={store.label}>
-                      {store.teams.map((team) => (
-                        <CommandItem
-                          key={team.value}
-                          onSelect={() => {
-                            setSelectedTeam(team);
-                            setOpen(false);
-                          }}
-                          className="text-sm"
-                        >
-                          <Avatar className="mr-2 h-5 w-5">
-                            <AvatarImage
-                              src={`https://avatar.vercel.sh/${team.value}.png`}
-                              alt={team.label}
-                              className="grayscale"
+        {!!stores.length && (
+          <Dialog open={showNewTeamDialog} onOpenChange={setShowNewTeamDialog}>
+            <Popover open={open} onOpenChange={setOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={open}
+                  aria-label="Select a team"
+                  className={cn("w-[200px] justify-between")}
+                >
+                  <Avatar className="mr-2 h-5 w-5">
+                    <AvatarImage
+                      src={`https://avatar.vercel.sh/${selectedStore._id}.png`}
+                      alt={selectedStore.name}
+                      className="grayscale"
+                    />
+                    <AvatarFallback>SC</AvatarFallback>
+                  </Avatar>
+                  {selectedStore.name}
+                  <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[200px] p-0">
+                <Command>
+                  <CommandList>
+                    <CommandInput placeholder="Search team..." />
+                    <CommandEmpty>No team found.</CommandEmpty>
+                    {formmatedStore?.map((store) => (
+                      <CommandGroup key={store.label} heading={store.label}>
+                        {store?.teams?.map((team) => (
+                          <CommandItem
+                            key={team._id}
+                            onSelect={() => {
+                              setSelectedStore(team);
+                              setOpen(false);
+                            }}
+                            className="text-sm"
+                          >
+                            <Avatar className="mr-2 h-5 w-5">
+                              <AvatarImage
+                                src={`https://avatar.vercel.sh/${team._id}.png`}
+                                alt={team.name}
+                                className="grayscale"
+                              />
+                              <AvatarFallback>SC</AvatarFallback>
+                            </Avatar>
+                            {team.name}
+                            <CheckIcon
+                              className={cn(
+                                "ml-auto h-4 w-4",
+                                selectedStore._id === team._id
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
                             />
-                            <AvatarFallback>SC</AvatarFallback>
-                          </Avatar>
-                          {team.label}
-                          <CheckIcon
-                            className={cn(
-                              "ml-auto h-4 w-4",
-                              selectedTeam.value === team.value
-                                ? "opacity-100"
-                                : "opacity-0"
-                            )}
-                          />
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  ))}
-                </CommandList>
-                <CommandSeparator />
-              </Command>
-            </PopoverContent>
-          </Popover>
-        </Dialog>
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    ))}
+                  </CommandList>
+                  <CommandSeparator />
+                </Command>
+              </PopoverContent>
+            </Popover>
+          </Dialog>
+        )}
       </div>
 
       <div className="flex-1">
-        <nav className="flex justify-end px-2 text-sm font-medium lg:px-4">
+        <nav className="hidden md:flex justify-end px-2 text-sm font-medium lg:px-4">
           {navLinks.map((link, index) => (
             <NavLink
               key={index}
-              to={link.to}
+              to={`${link.to}/?storeId=${selectedStore._id}`}
               icon={link.icon}
               label={link.label}
               badgeCount={link.badgeCount}
@@ -261,16 +280,16 @@ export const NavLink = ({
 }: NavLinkProps) => (
   <Link
     to={to}
-    className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${
+    className={`flex relative items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${
       active ? "bg-muted text-primary" : "text-muted-foreground"
     }`}
   >
     <Icon className="h-4 w-4" />
     {label}
     {badgeCount && (
-      <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
+      <p className="ml-auto bg-muted-foreground/60 text-base text-black border-black border-2 absolute top-0 right-0 flex h-6 w-6 animate-bounce shrink-0 items-center justify-center rounded-full">
         {badgeCount}
-      </Badge>
+      </p>
     )}
   </Link>
 );
