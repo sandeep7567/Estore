@@ -1,7 +1,8 @@
 import Header from "@/components/dashboard/Header";
-import { useAppSelector } from "@/hooks/redux";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { useFetchStores } from "@/hooks/store/useFetchStores";
 import { useLogoutMutation } from "@/redux/api/apiSlice";
+import { onOpenLogin } from "@/redux/reducer/accountSlice";
 import { Home, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
@@ -12,6 +13,7 @@ const Dashboard = () => {
   const { cartItems } = useAppSelector((state) => state.cart);
   const location = useLocation();
   const { stores, isStoresLoading, isStoresError } = useFetchStores();
+  const dispatch = useAppDispatch();
 
   const navLinks = [
     {
@@ -37,6 +39,7 @@ const Dashboard = () => {
     try {
       await logout({}).unwrap();
       toast(`Logged out successfully`);
+      dispatch(onOpenLogin());
     } catch (error) {
       console.error("Logout failed", error);
       toast(`Couldn't log out`);
