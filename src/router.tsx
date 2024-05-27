@@ -5,6 +5,7 @@ import NonAuth from "./layouts/NonAuth";
 import Root from "./layouts/Root";
 import CartPage from "./pages/customer/cart";
 import HomePage from "./pages/HomePage";
+import { NotFound } from "./components/ui/not-found";
 
 export const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ export const router = createBrowserRouter([
             ),
           },
         ],
+      },
+      {
+        path: "*",
+        element: <NotFound />,
       },
     ],
   },
