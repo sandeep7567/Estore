@@ -49,7 +49,9 @@ const CartItems = () => {
         return <CartItem key={i} item={cartItem} />;
       })}
       <div className="flex justify-between items-center">
-        <span className="font-bold text-xl">&#8377;{totalAmount}</span>
+        <span className="font-bold text-xl">
+          Total Amount: &#8377;{totalAmount}
+        </span>
         {user !== null ? (
           <Button onClick={handleCheckout}>
             Checkout

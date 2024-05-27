@@ -91,6 +91,7 @@ const CartItem = ({ item }: ICartItem) => {
                                 fontSize: 12,
                                 borderRadius: "50%",
                               }}
+                              key={v + i}
                             >
                               {v}
                             </p>

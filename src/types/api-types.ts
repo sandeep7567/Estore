@@ -7,8 +7,15 @@ export type MessageResponse = {
 export type LogoutResponse = object;
 export type LogoutRequest = object;
 
-export type ProductsResponse = { products: ProductI[] };
 export type ProductResponse = { product: ProductI };
+
+export type ProductsResponse = {
+  products: ProductI[];
+  totalDocs: number;
+  pageIndex: number;
+  pageSize: number;
+  pageCount: number;
+};
 
 export type UsersResponse = { users: UserI[] };
 export type UserResponse = { users: UserI };

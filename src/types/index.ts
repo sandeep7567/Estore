@@ -102,6 +102,13 @@ export enum Roles {
   CUSTOMER = "customer",
 }
 
+export enum Count {
+  ZERO = 0,
+  PAGE_INDEX = 1,
+  PAGE_SIZE = 8,
+  PRICE_CONVERSION = 100,
+}
+
 export interface UserI {
   _id: string;
   firstName: string;
