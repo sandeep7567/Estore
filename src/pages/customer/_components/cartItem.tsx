@@ -52,12 +52,55 @@ const CartItem = ({ item }: ICartItem) => {
       <div className="grid grid-cols-2">
         <div className="w-3/4 flex items-center">
           <img src={item.imageFile} alt={item.name} width={100} height={100} />
-          <div className="flex gap-12 ml-6 w-full">
-            <div className="flex-1">
-              <h2 className="font-bold">{item.name}</h2>
-              <h3 className="text-xs text-gray-500">{item.price}</h3>
-              <h3 className="text-xs text-gray-500">{item.price}</h3>
-            </div>
+          <div className="flex flex-col gap-2 ml-6 w-full">
+            <h2 className="font-bold">{item.name}</h2>
+            <h3 className="text-xs text-gray-500">
+              {item.properties.map((prop) => (
+                <p
+                  className="flex justify-start gap-6  items-center"
+                  key={prop._id}
+                >
+                  <p className="font-medium">{prop.name}</p>
+                  <p className="flex gap-2 mb-2">
+                    {Array.isArray(prop.value)
+                      ? prop.value.map((v, i) => {
+                          if (v.startsWith("#")) {
+                            return (
+                              <p
+                                style={{
+                                  width: 12,
+                                  height: 12,
+                                  borderRadius: `50%`,
+                                  backgroundColor: v,
+                                  marginLeft: 4,
+                                  border: "1px solid black",
+                                }}
+                                key={v + i}
+                              />
+                            );
+                          }
+
+                          return (
+                            <p
+                              style={{
+                                marginLeft: 4,
+                                color: "white",
+                                padding: 2,
+                                border: "1px solid black",
+                                backgroundColor: "black",
+                                fontSize: 12,
+                                borderRadius: "50%",
+                              }}
+                            >
+                              {v}
+                            </p>
+                          );
+                        })
+                      : prop.value}
+                  </p>
+                </p>
+              ))}
+            </h3>
           </div>
         </div>
         <div className="flex items-center gap-4 justify-between">
@@ -66,7 +109,7 @@ const CartItem = ({ item }: ICartItem) => {
           </QtyChanger>
 
           <div className="flex">
-            <div className="font-bold w-12">&#8377;{item.price}</div>
+            <div className="font-bold w-12"> &#8377;{item.price}</div>
             <button
               className="ml-4"
               onClick={() => handleRemoveFromCart(item._id)}

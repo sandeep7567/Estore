@@ -21,7 +21,7 @@ const LoginPage = () => {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="m@example.com"
+                  placeholder="demo@demo.com"
                   required
                 />
               </div>
@@ -29,7 +29,12 @@ const LoginPage = () => {
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
                 </div>
-                <Input id="password" type="password" required />
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="12345678"
+                  required
+                />
               </div>
               <Button type="submit" className="w-full">
                 Login

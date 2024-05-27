@@ -34,7 +34,7 @@ const LoginForm: React.FC<LoginProps> = ({ form }) => {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="m@example.com"
+                  placeholder="demo@demo.com"
                   {...field}
                 />
               </FormControl>

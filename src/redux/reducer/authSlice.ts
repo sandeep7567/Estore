@@ -11,7 +11,7 @@ const initialState: AuthType = {
 
 const authSlice = createSlice({
   initialState,
-  name: "user",
+  name: "auth",
   reducers: {
     getUser: (state, action: PayloadAction<{ user: User }>) => {
       state.user = action.payload.user;

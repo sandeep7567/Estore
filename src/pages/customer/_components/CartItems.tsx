@@ -2,15 +2,17 @@
 
 import { Button } from "@/components/ui/button";
 
-import { useAppSelector } from "@/hooks/redux";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { ArrowRight, LogIn, ShoppingCart } from "lucide-react";
 import { useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import CartItem from "./cartItem";
+import { onOpenLogin } from "@/redux/reducer/accountSlice";
 
 const CartItems = () => {
   const location = useLocation();
   const { user } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
 
   const storeId = new URLSearchParams(location.search).get("storeId");
   const { cartItems } = useAppSelector((state) => state.cart);
@@ -37,6 +39,10 @@ const CartItems = () => {
     );
   }
 
+  const handleCheckout = () => {
+    console.log("open checkout page");
+  };
+
   return (
     <div className="flex flex-col gap-8">
       {cartItems.map((cartItem, i) => {
@@ -45,16 +51,14 @@ const CartItems = () => {
       <div className="flex justify-between items-center">
         <span className="font-bold text-xl">&#8377;{totalAmount}</span>
         {user !== null ? (
-          <Button>
+          <Button onClick={handleCheckout}>
             Checkout
             <ArrowRight size={16} className="ml-2" />
           </Button>
         ) : (
-          <Button asChild>
-            <Link to={`/auth/login`}>
-              Login
-              <LogIn size={16} className="ml-2" />
-            </Link>
+          <Button onClick={() => dispatch(onOpenLogin())}>
+            Login
+            <LogIn size={16} className="ml-2" />
           </Button>
         )}
       </div>

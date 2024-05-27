@@ -1,9 +1,11 @@
-import { StoreModal } from "@/components/modals/StoreModal";
+import { AccountLoginModal } from "@/components/modals/account-login-modal";
+import { AccountRegisterModal } from "@/components/modals/account-register-modal";
 
 const ModalProvider = () => {
   return (
     <>
-      <StoreModal />
+      <AccountLoginModal />
+      <AccountRegisterModal />
     </>
   );
 };

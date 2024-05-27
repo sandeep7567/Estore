@@ -1,17 +1,23 @@
 import { Form } from "@/components/ui/form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import LoginForm from "../form/LoginForm";
-import RegisterForm from "../form/RegisterForm";
+import { useAppDispatch } from "@/hooks/redux";
 import {
   useLoginMutation,
   useRegistrationMutation,
 } from "@/redux/api/authApiSlice";
+import {
+  onCloseLogin,
+  onCloseRegister,
+  onToggle,
+} from "@/redux/reducer/accountSlice";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { z } from "zod";
+import LoginForm from "../form/LoginForm";
+import RegisterForm from "../form/RegisterForm";
 
 interface AuthProps {
   title: string;
@@ -56,11 +62,10 @@ const Auth: React.FC<AuthProps> = ({
   mode = "model",
   formType,
 }) => {
-  const navigate = useNavigate();
-  const [register, { isSuccess: isRegisterSuccesss }] =
-    useRegistrationMutation();
+  const dispatch = useAppDispatch();
+  const [register] = useRegistrationMutation();
 
-  const [login, { isSuccess }] = useLoginMutation();
+  const [login] = useLoginMutation();
 
   // 1. Define your form.
   const loginForm = useForm<z.infer<typeof formLoginSchema>>({
@@ -81,31 +86,82 @@ const Auth: React.FC<AuthProps> = ({
     },
   });
 
-  const redirect = new URLSearchParams(location.search).get("redirect") || "/";
-
-  // 2. Define a submit handler.
   async function onRegisterSubmit(values: z.infer<typeof formRegisterSchema>) {
-    await register(values);
-
-    if (isRegisterSuccesss) {
-      toast("Register Success");
-      navigate(`${redirect}`);
+    try {
+      const { id } = await register(values).unwrap();
+      if (id) {
+        toast("Register Success");
+        dispatch(onCloseRegister());
+      }
+    } catch (err) {
+      console.error(err);
+      toast("Register failed");
     }
   }
 
   async function onLoginSubmit(values: z.infer<typeof formLoginSchema>) {
-    await login(values);
-
-    if (isSuccess) {
-      toast("Login Success");
-      navigate(`${redirect}`);
+    try {
+      const { id } = await login(values).unwrap();
+      if (id) {
+        toast("Login success");
+        dispatch(onCloseLogin());
+      }
+    } catch (err) {
+      console.error(err);
+      toast("Login failed");
     }
   }
+
+  const handleToggleMode = () => {
+    dispatch(onToggle({ formType }));
+  };
 
   if (mode === "model") {
     return (
       <>
-        <h1>Model</h1>
+        <div className="mx-auto grid w-[400px] gap-6">
+          <div className="grid gap-2 text-center">
+            <h1 className="text-3xl font-bold">{title}</h1>
+            <p className="text-balance text-muted-foreground">{description}</p>
+          </div>
+
+          {formType === "register" && (
+            <Form {...registerForm}>
+              <form
+                onSubmit={registerForm.handleSubmit(onRegisterSubmit)}
+                className="grid gap-4"
+              >
+                <RegisterForm form={registerForm} />
+
+                <Button type="submit" className="w-full">
+                  {submitBtnLabel}
+                </Button>
+              </form>
+            </Form>
+          )}
+
+          {formType === "login" && (
+            <Form {...loginForm}>
+              <form
+                onSubmit={loginForm.handleSubmit(onLoginSubmit)}
+                className="grid gap-4"
+              >
+                <LoginForm form={loginForm} />
+
+                <Button type="submit" className="w-full">
+                  {submitBtnLabel}
+                </Button>
+              </form>
+            </Form>
+          )}
+
+          <div className="mt-4 text-center text-sm">
+            {btnText}{" "}
+            <Button onClick={handleToggleMode} variant={"link"}>
+              {btnTitle}
+            </Button>
+          </div>
+        </div>
       </>
     );
   }

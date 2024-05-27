@@ -13,9 +13,9 @@ export const useFetchProducts = (query: Query) => {
     isLoading: isProductsLoading,
     error: productsError,
   } = useGetProductsQuery(query, {
-    pollingInterval: 0,
+    pollingInterval: query.storeId === null ? 1000 : 0,
     refetchOnMountOrArgChange: true,
-    skip: false,
+    skip: query.storeId === null,
   });
 
   return {

@@ -27,11 +27,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const { cartItems } = useAppSelector((state) => state.cart);
 
   const alreadyHasInCart = useMemo(() => {
-    const currentConfiguration = {
+    const currentConfiguration: CartItem = {
       _id: product._id,
       name: product.name,
       imageFile: product.imageFile,
       price: product.price,
+      properties: product.properties,
       qty: 1,
     };
 
@@ -46,6 +47,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       name: product.name,
       imageFile: product.imageFile,
       price: product.price,
+      properties: product.properties,
       qty: 1,
     };
 

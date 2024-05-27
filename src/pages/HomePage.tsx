@@ -1,9 +1,19 @@
 import { ProductsList } from "@/components/product/product-list";
 import { useFetchProducts } from "@/hooks/product/useFetchProducts";
+import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function HomePage() {
   const urlParams = new URLSearchParams(window.location.search);
   const storeId = urlParams.get("storeId");
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (pathname === "/" && storeId) {
+      navigate(`/?storeId=${storeId}`);
+    }
+  }, [navigate, pathname, storeId]);
 
   const { products } = useFetchProducts({
     storeId: storeId!,

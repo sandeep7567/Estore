@@ -1,10 +1,9 @@
 import Header from "@/components/dashboard/Header";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { useAppSelector } from "@/hooks/redux";
 import { useFetchStores } from "@/hooks/store/useFetchStores";
 import { useLogoutMutation } from "@/redux/api/apiSlice";
-import { onClose } from "@/redux/reducer/storeSlice";
 import { Home, ShoppingCart } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -12,7 +11,6 @@ const Dashboard = () => {
   const { user } = useAppSelector((state) => state.auth);
   const { cartItems } = useAppSelector((state) => state.cart);
   const location = useLocation();
-  const dispatch = useAppDispatch();
   const { stores, isStoresLoading, isStoresError } = useFetchStores();
 
   const navLinks = [
@@ -44,12 +42,6 @@ const Dashboard = () => {
       toast(`Couldn't log out`);
     }
   };
-
-  useEffect(() => {
-    if (user && user.storeId.length > 0) {
-      dispatch(onClose());
-    }
-  }, [dispatch, user]);
 
   if (isStoresLoading) {
     return <div>Loading...</div>;

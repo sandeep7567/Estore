@@ -12,7 +12,7 @@ const initialState: ProductType = {
 
 const productSlice = createSlice({
   initialState,
-  name: "store",
+  name: "product",
   reducers: {
     onToggle: (state) => {
       state.isOpen = !state.isOpen;

@@ -39,6 +39,8 @@ import {
   CommandSeparator,
 } from "../ui/command";
 import { Dialog } from "../ui/dialog";
+import { onOpenLogin, onOpenRegister } from "@/redux/reducer/accountSlice";
+import { useAppDispatch } from "@/hooks/redux";
 
 export interface TeamSwitcherProps extends PopoverTriggerProps {}
 
@@ -74,6 +76,7 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const dispatch = useAppDispatch();
   const formmatedStore = stores?.map((store) => ({
     label: store.name,
     teams: [
@@ -234,8 +237,8 @@ const Header: React.FC<HeaderProps> = ({
             </>
           ) : (
             <>
-              <DropdownMenuItem asChild>
-                <Link to={"/auth/register"}>Register</Link>
+              <DropdownMenuItem onClick={() => dispatch(onOpenRegister())}>
+                Register
               </DropdownMenuItem>
               <DropdownMenuSeparator />
             </>
@@ -252,9 +255,9 @@ const Header: React.FC<HeaderProps> = ({
             <DropdownMenuItem
               className="cursor-pointer"
               disabled={disabled}
-              asChild
+              onClick={() => dispatch(onOpenLogin())}
             >
-              <Link to={"/auth/login"}>Login</Link>
+              Login
             </DropdownMenuItem>
           )}
         </DropdownMenuContent>

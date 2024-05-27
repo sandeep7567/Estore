@@ -3,7 +3,10 @@ import { ProductI } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface CartItem
-  extends Pick<ProductI, "_id" | "name" | "price" | "imageFile"> {
+  extends Pick<
+    ProductI,
+    "_id" | "name" | "price" | "imageFile" | "properties"
+  > {
   qty: number;
   hash?: string;
 }
