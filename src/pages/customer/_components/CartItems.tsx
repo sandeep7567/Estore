@@ -2,20 +2,25 @@
 
 import { Button } from "@/components/ui/button";
 
+import { DELIVERY_STATUS } from "@/constants";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { useCreateOrdersMutation } from "@/redux/api/orderApiSlice";
+import { onOpenLogin } from "@/redux/reducer/accountSlice";
 import { ArrowRight, LogIn, ShoppingCart } from "lucide-react";
 import { useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { toast } from "sonner";
 import CartItem from "./cartItem";
-import { onOpenLogin } from "@/redux/reducer/accountSlice";
+import { OrdersDataApiRequest } from "@/types";
 
 const CartItems = () => {
   const location = useLocation();
   const { user } = useAppSelector((state) => state.auth);
+  const { cartItems } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
 
   const storeId = new URLSearchParams(location.search).get("storeId");
-  const { cartItems } = useAppSelector((state) => state.cart);
+  const [createOrders] = useCreateOrdersMutation();
 
   const totalAmount = useMemo(() => {
     const totalProduct = cartItems.reduce((acc, item) => {
@@ -39,8 +44,42 @@ const CartItems = () => {
     );
   }
 
-  const handleCheckout = () => {
-    console.log("open checkout page");
+  function generateRandomOrderId(length: number): string {
+    const characters = "abcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
+    }
+    return result;
+  }
+
+  const orderId: string = generateRandomOrderId(10); // Generates a random string of length 10
+
+  const handleCheckout = async () => {
+    const ordersInfo: OrdersDataApiRequest = {
+      productInfo: cartItems.map((item) => ({
+        productName: item.name,
+        price: item.price * 100,
+        qty: item.qty,
+        productId: item._id,
+      })),
+      totalAmount: totalAmount * 100,
+      orderId: orderId,
+      storeId,
+      userId: user?._id,
+      purchaseAt: new Date(),
+      status: DELIVERY_STATUS.PENDING,
+    };
+
+    try {
+      console.log(ordersInfo);
+      await createOrders(ordersInfo);
+      toast.success("Order Successful");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

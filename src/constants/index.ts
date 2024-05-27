@@ -6,3 +6,10 @@ export const ROLES = {
   CUSTOMER: "customer",
   MANAGER: "manager",
 };
+
+export const DELIVERY_STATUS = Object.freeze({
+  PENDING: "PENDING",
+  OUT_FOR_DELIVERY: "OUT_FOR_DELIVERY",
+  DELIVERED: "DELIVERED",
+  CANCELLED: "CANCELLED",
+});

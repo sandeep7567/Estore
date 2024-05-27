@@ -1,3 +1,5 @@
+import { DELIVERY_STATUS } from "@/constants";
+
 export type LoginCredentials = {
   email: string;
   password: string;
@@ -133,6 +135,25 @@ export type ProductDataApiRequest = {
   storeId: string;
   productId?: string;
   formData: FormData;
+};
+
+export type OrderStatus = keyof typeof DELIVERY_STATUS;
+
+type OrderProductData = {
+  productId: string;
+  productName: string;
+  price: number;
+  qty: number;
+};
+
+export type OrdersDataApiRequest = {
+  productInfo: OrderProductData[];
+  orderId: string;
+  storeId: string | null;
+  userId: string | undefined;
+  totalAmount: number;
+  purchaseAt: Date;
+  status: OrderStatus;
 };
 
 export type ProductIds = {
