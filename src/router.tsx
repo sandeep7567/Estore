@@ -3,7 +3,7 @@ import Auth from "./components/authentication/Auth";
 import Dashboard from "./layouts/Dashboard";
 import NonAuth from "./layouts/NonAuth";
 import Root from "./layouts/Root";
-import CartPage from "./pages/cart/page";
+import CartPage from "./pages/cart/cart";
 import HomePage from "./pages/HomePage";
 import { NotFound } from "./components/ui/not-found";
 

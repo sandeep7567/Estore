@@ -54,19 +54,19 @@ const CartItem = ({ item }: ICartItem) => {
           <img src={item.imageFile} alt={item.name} width={100} height={100} />
           <div className="flex flex-col gap-2 ml-6 w-full">
             <h2 className="font-bold">{item.name}</h2>
-            <h3 className="text-xs text-gray-500">
+            <div className="text-xs text-gray-500">
               {item.properties.map((prop) => (
-                <p
+                <div
                   className="flex justify-start gap-6  items-center"
                   key={prop._id}
                 >
                   <p className="font-medium">{prop.name}</p>
-                  <p className="flex gap-2 mb-2">
+                  <div className="flex gap-2 mb-2">
                     {Array.isArray(prop.value)
                       ? prop.value.map((v, i) => {
                           if (v.startsWith("#")) {
                             return (
-                              <p
+                              <span
                                 style={{
                                   width: 12,
                                   height: 12,
@@ -81,7 +81,7 @@ const CartItem = ({ item }: ICartItem) => {
                           }
 
                           return (
-                            <p
+                            <span
                               style={{
                                 marginLeft: 4,
                                 color: "white",
@@ -94,14 +94,14 @@ const CartItem = ({ item }: ICartItem) => {
                               key={v + i}
                             >
                               {v}
-                            </p>
+                            </span>
                           );
                         })
                       : prop.value}
-                  </p>
-                </p>
+                  </div>
+                </div>
               ))}
-            </h3>
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-4 justify-between">

@@ -61,7 +61,6 @@ export const cartSlice = createSlice({
           };
         });
 
-        window.localStorage.removeItem("cartItems");
         window.localStorage.setItem("cartItems", JSON.stringify(updatedItem));
 
         state.cartItems = updatedItem;
@@ -72,7 +71,6 @@ export const cartSlice = createSlice({
         (item) => item._id !== action.payload.productId
       );
 
-      window.localStorage.removeItem("cartItems");
       window.localStorage.setItem(
         "cartItems",
         JSON.stringify(filterdRemovedItem)
