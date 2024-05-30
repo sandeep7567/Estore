@@ -1,4 +1,5 @@
 import Header from "@/components/dashboard/Header";
+import { NotFound } from "@/components/ui/not-found";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { useFetchStores } from "@/hooks/store/useFetchStores";
 import { useLogoutMutation } from "@/redux/api/apiSlice";
@@ -47,11 +48,11 @@ const Dashboard = () => {
   };
 
   if (isStoresLoading) {
-    return <div>Loading...</div>;
+    return null;
   }
 
   if (isStoresError) {
-    return <div>Error: {"An unknown error occurred"}</div>; // Handle potential null value
+    return <NotFound />;
   }
 
   return (

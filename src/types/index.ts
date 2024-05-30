@@ -148,12 +148,11 @@ type OrderProductData = {
 
 export type OrdersDataApiRequest = {
   productInfo: OrderProductData[];
-  orderId: string;
   storeId: string | null;
   userId: string | undefined;
   totalAmount: number;
-  purchaseAt: Date;
-  status: OrderStatus;
+  purchaseAt?: Date;
+  status?: OrderStatus;
 };
 
 export type ProductIds = {
@@ -171,5 +170,3 @@ export type DeleteProductRequest = {
   storeId: string;
   productId: string;
 };
-
-// { storeId, {ids: [ids, ]} }

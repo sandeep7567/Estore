@@ -1,6 +1,6 @@
 import CartItems from "./_components/CartItems";
 
-const Cart = () => {
+const CartPage = () => {
   return (
     <section>
       <div className="container mx-auto py-6">
@@ -14,4 +14,4 @@ const Cart = () => {
   );
 };
 
-export default Cart;
+export default CartPage;

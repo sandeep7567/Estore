@@ -1,6 +1,9 @@
+import NoDataPage from "@/components/layout/NoDataPage";
 import { ProductsList } from "@/components/product/product-list";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useFetchProducts } from "@/hooks/product/useFetchProducts";
 import { Count } from "@/types";
+import { Loader as LoaderIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -81,8 +84,17 @@ function HomePage() {
 
 export const Loader = () => {
   return (
-    <div className="h-screen w-screen  flex justify-center items-center">
-      <div className="border-collapse border-t-2 h-40 aspect-square w-40 animate-spin  border-blue-500 rounded-full flex justify-center items-center" />
+    // <div className="h-screen w-screen  flex justify-center items-center">
+    //   <div className="border-collapse border-t-2 h-40 aspect-square w-40 animate-spin  border-blue-500 rounded-full flex justify-center items-center" />
+    // </div>
+    <div className="relative h-screen w-full flex bg-gray-200/50">
+      <NoDataPage description="" info="" title="">
+        <LoaderIcon
+          size={80}
+          className="animate-spin flex size-6 items-center text-primary/40 justify-center"
+        />
+        <Skeleton className="h-8 w-48" />
+      </NoDataPage>
     </div>
   );
 };
