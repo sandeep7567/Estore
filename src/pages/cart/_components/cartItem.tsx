@@ -9,6 +9,7 @@ import { useFetchProduct } from "@/hooks/product/useFetchProduct";
 import { useAppDispatch } from "@/hooks/redux";
 import { toast } from "sonner";
 import QtyChanger from "./qtyChanger";
+import { LIMIT } from "@/constants";
 
 interface ICartItem {
   item: CartItemsProps;
@@ -25,7 +26,7 @@ const CartItem = ({ item }: ICartItem) => {
       return;
     }
 
-    if (item.qty >= 1 && item.qty <= 5) {
+    if (item.qty >= LIMIT.MIN_QTY && item.qty <= LIMIT.MAX_QTY) {
       if (product?.price) {
         const updateItem: CartItemsProps = {
           ...item,
@@ -43,7 +44,7 @@ const CartItem = ({ item }: ICartItem) => {
     toast.success("Rmoved from cart successfully");
   };
 
-  const maxValue = Math.max(...[1, 2, 3, 4, 5]);
+  const maxValue = Math.max(...[LIMIT.MIN_QTY, 2, 3, 4, 5, LIMIT.MAX_QTY]);
 
   const disabled = item.qty === maxValue;
 

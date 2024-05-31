@@ -13,3 +13,8 @@ export const DELIVERY_STATUS = Object.freeze({
   DELIVERED: "DELIVERED",
   CANCELLED: "CANCELLED",
 });
+
+export const LIMIT = Object.freeze({
+  MIN_QTY: 1,
+  MAX_QTY: 50,
+});

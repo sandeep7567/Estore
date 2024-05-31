@@ -90,12 +90,12 @@ const Auth: React.FC<AuthProps> = ({
     try {
       const { id } = await register(values).unwrap();
       if (id) {
-        toast("Register Success");
+        toast.success("Register Success");
         dispatch(onCloseRegister());
       }
     } catch (err) {
       console.error(err);
-      toast("Register failed");
+      toast.error("Register failed");
     }
   }
 
@@ -103,12 +103,12 @@ const Auth: React.FC<AuthProps> = ({
     try {
       const { id } = await login(values).unwrap();
       if (id) {
-        toast("Login success");
+        toast.success("Login success");
         dispatch(onCloseLogin());
       }
     } catch (err) {
       console.error(err);
-      toast("Login failed");
+      toast.error("Login failed");
     }
   }
 
@@ -151,6 +151,24 @@ const Auth: React.FC<AuthProps> = ({
                 <Button type="submit" className="w-full">
                   {submitBtnLabel}
                 </Button>
+
+                {/* Demo Account Info */}
+                <div className="bg-white rounded-lg shadow-md p-6">
+                  <div className="mb-4 flex items-center">
+                    <h2 className="flex-1 text-lg font-semibold text-pretty">
+                      Email
+                    </h2>
+                    <p className="text-sm text-gray-800 font-bold">
+                      demo@demo.com
+                    </p>
+                  </div>
+                  <div className="border-t border-gray-200 pt-4 flex items-center">
+                    <h2 className="grow text-lg font-semibold text-pretty">
+                      Password
+                    </h2>
+                    <p className="text-sm text-gray-800 font-bold">12345678</p>
+                  </div>
+                </div>
               </form>
             </Form>
           )}
