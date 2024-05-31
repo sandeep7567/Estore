@@ -59,7 +59,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <div
       className={cn(
-        "space-y-3 border-2 border-black rounded-lg p-1",
+        "space-y-3 border-2 border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-lg transition-shadow duration-300 ease-in-out",
         className
       )}
       {...props}
@@ -71,20 +71,25 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           width={width}
           height={height}
           className={cn(
-            "h-auto w-auto object-cover transition-all hover:scale-105",
+            "h-auto w-auto object-cover transition-transform duration-300 hover:scale-105",
             aspectRatio === "portrait" ? "aspect-[3/4]" : "aspect-square"
           )}
         />
       </div>
-      <div className="space-y-1 text-sm flex justify-between px-4 items-center">
+      <div className="space-y-1 text-sm flex justify-between px-2 items-center">
         <h3 className="font-medium leading-none">{product.name}</h3>
-        <p className="text-sm text-muted-foreground">Rs.{product.price}</p>
+        <p className="text-sm text-gray-600">Rs.{product.price}</p>
       </div>
-      <div className="flex gap-x-6 justify-center ">
+      <div className="flex gap-x-2 justify-center ">
         <Button
           disabled={alreadyHasInCart}
           onClick={handleAddToCart}
-          className={alreadyHasInCart ? "bg-gray-700" : "bg-primary"}
+          className={cn(
+            "flex items-center px-4 py-2 rounded-md font-medium transition-colors",
+            alreadyHasInCart
+              ? "bg-gray-700 text-white"
+              : "bg-blue-600 text-white hover:bg-blue-700"
+          )}
         >
           <ShoppingCart size={20} />
           <span className="ml-2">

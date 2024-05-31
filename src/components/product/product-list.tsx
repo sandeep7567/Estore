@@ -40,14 +40,12 @@ export const ProductsList: FC<ProductsListProps> = ({
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex">
-        <h3 className="font-bold text-3xl flex-1">{title}</h3>
-        <div className="flex justify-center items-center gap-4">
-          Total Docs:
-          <span className="text-accent-foreground font-bold">
-            {pageInfo?.totalDocs}
-          </span>
+    <div className="space-y-8 px-4">
+      <div className="flex justify-between items-center">
+        <h3 className="font-bold text-3xl">{title}</h3>
+        <div className="flex items-center gap-4">
+          <span>Total Docs:</span>
+          <span className="text-blue-600 font-bold">{pageInfo?.totalDocs}</span>
           <Button
             variant="outline"
             size="sm"
@@ -57,7 +55,7 @@ export const ProductsList: FC<ProductsListProps> = ({
           >
             Previous
           </Button>
-          <div className="text-xs lg:text-sm text-muted-foreground">
+          <div className="text-xs lg:text-sm text-gray-500">
             {pageInfo?.pageIndex}/{pageInfo?.pageCount}
           </div>
           <Button
@@ -72,23 +70,15 @@ export const ProductsList: FC<ProductsListProps> = ({
         </div>
       </div>
 
-      {items.length === 0 && (
-        <>
-          <NotFound className="" />
-        </>
+      {items.length === 0 ? (
+        <NotFound />
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
+          {items.map((item) => (
+            <ProductCard key={item._id} product={item} />
+          ))}
+        </div>
       )}
-      <div className="grid grid-cols-1 sm:grid-cols-2 cursor-pointer md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-10">
-        {items.map((item) => (
-          <ProductCard
-            key={item._id}
-            product={item}
-            className="w-[250px]"
-            aspectRatio="square"
-            width={250}
-            height={250}
-          />
-        ))}
-      </div>
     </div>
   );
 };
