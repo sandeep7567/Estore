@@ -1,11 +1,10 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getUser, logout } from "../reducer/authSlice";
 import { LogoutRequest, LogoutResponse } from "@/types/api-types";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { getUser, logout } from "../reducer/authSlice";
+import { baseQueryWithReauth } from "./customBaseQuery";
 
 export const apiSlice = createApi({
-  baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_BACKEND_URL,
-  }),
+  baseQuery: baseQueryWithReauth,
   tagTypes: ["Auth", "Store", "Product", "User", "Order"],
   endpoints: (builder) => ({
     getUser: builder.query({

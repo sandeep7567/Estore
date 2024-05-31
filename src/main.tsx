@@ -11,7 +11,18 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider store={store}>
       <RouterProvider router={router} />
-      <Toaster />
+      <Toaster
+        position="bottom-left"
+        richColors
+        toastOptions={{
+          classNames: {
+            error: "bg-red-400",
+            success: "text-green-400",
+            warning: "text-yellow-400",
+            info: "bg-blue-400",
+          },
+        }}
+      />
     </Provider>
   </React.StrictMode>
 );

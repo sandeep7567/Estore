@@ -41,6 +41,7 @@ import {
 import { Dialog } from "../ui/dialog";
 import { onOpenLogin, onOpenRegister } from "@/redux/reducer/accountSlice";
 import { useAppDispatch } from "@/hooks/redux";
+import { Badge } from "../ui/badge";
 
 export interface TeamSwitcherProps extends PopoverTriggerProps {}
 
@@ -207,7 +208,7 @@ const Header: React.FC<HeaderProps> = ({
           {navLinks.map((link, index) => (
             <NavLink
               key={index}
-              to={`${link.to}/?storeId=${selectedStore._id}`}
+              to={`${link.to}?storeId=${selectedStore._id}`}
               icon={link.icon}
               label={link.label}
               badgeCount={link.badgeCount}
@@ -289,10 +290,10 @@ export const NavLink = ({
   >
     <Icon className="h-4 w-4" />
     {label}
-    {badgeCount && (
-      <p className="ml-auto bg-muted-foreground/60 text-base text-black border-black border-2 absolute top-0 right-0 flex h-6 w-6 animate-bounce shrink-0 items-center justify-center rounded-full">
+    {!!badgeCount && (
+      <Badge className="absolute top-0 right-0 animate-bounce ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
         {badgeCount}
-      </p>
+      </Badge>
     )}
   </Link>
 );

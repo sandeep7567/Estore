@@ -6,6 +6,7 @@ import Root from "./layouts/Root";
 import CartPage from "./pages/cart/cart";
 import HomePage from "./pages/HomePage";
 import { NotFound } from "./components/ui/not-found";
+import OrderPage from "./pages/order/order";
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
           {
             path: "/cart",
             element: <CartPage />,
+          },
+          {
+            path: "/order",
+            element: <OrderPage />,
           },
         ],
       },

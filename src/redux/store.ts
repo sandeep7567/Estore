@@ -23,27 +23,39 @@ export type RootState = ReturnType<typeof store.getState>;
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
 
+let refreshTimeoutId: NodeJS.Timeout; // Store the timeout ID
+const refreshTimer = () => {
+  clearTimeout(refreshTimeoutId);
+  const refreshTime = 3595000;
+
+  const timeoutId = setTimeout(async () => {
+    await refreshAccessToken();
+  }, refreshTime);
+
+  refreshTimeoutId = timeoutId;
+};
+
+const refreshAccessToken = async () => {
+  try {
+    await store.dispatch(
+      apiSlice.endpoints.refreshToken.initiate({}, { forceRefetch: true })
+    );
+  } catch (error) {
+    console.log(error);
+  } finally {
+    // Schedule the next refresh after the refresh time elapses
+    refreshTimer();
+  }
+};
+
 const initializeApp = async () => {
-  const { isError, error } = await store.dispatch(
-    apiSlice.endpoints.getUser.initiate({}, { forceRefetch: true })
+  await store.dispatch(
+    apiSlice.endpoints.refreshToken.initiate({}, { forceRefetch: true })
   );
 
-  if (isError && error && "status" in error && error.status === 401) {
-    {
-      const { isError, error } = await store.dispatch(
-        apiSlice.endpoints.refreshToken.initiate({}, { forceRefetch: true })
-      );
-
-      if (isError && error && "status" in error && error.status === 401) {
-        await store.dispatch(
-          apiSlice.endpoints.logout.initiate(
-            {},
-            { fixedCacheKey: "auth-logout", track: true }
-          )
-        );
-      }
-    }
-  }
+  await store.dispatch(
+    apiSlice.endpoints.getUser.initiate({}, { forceRefetch: true })
+  );
 };
 
 initializeApp();

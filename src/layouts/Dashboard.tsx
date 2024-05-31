@@ -18,7 +18,7 @@ const Dashboard = () => {
 
   const navLinks = [
     {
-      to: "",
+      to: "/",
       icon: Home,
       label: "Home",
       active: location.pathname === "/",
