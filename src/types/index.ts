@@ -1,4 +1,5 @@
 import { DELIVERY_STATUS } from "@/constants";
+import { CartItem } from "@/redux/reducer/cartSlice";
 
 export type LoginCredentials = {
   email: string;
@@ -139,21 +140,19 @@ export type ProductDataApiRequest = {
 
 export type OrderStatus = keyof typeof DELIVERY_STATUS;
 
-type OrderProductData = {
-  productId: string;
-  productName: string;
-  price: number;
-  qty: number;
-};
-
-export type OrdersDataApiRequest = {
-  productInfo: OrderProductData[];
-  storeId: string | null;
-  userId: string | undefined;
+export interface CheckoutFormDataRequest {
+  userInfo: {
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+  address: string;
+  orderItems: CartItem[]; // Assuming you have defined the CartItem interface
   totalAmount: number;
-  purchaseAt?: Date;
-  status?: OrderStatus;
-};
+  totalQty: number;
+  storeId?: string;
+  userId?: string;
+}
 
 export type ProductIds = {
   ids: string[];
