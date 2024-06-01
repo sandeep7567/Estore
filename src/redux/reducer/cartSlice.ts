@@ -3,12 +3,10 @@ import { ProductI } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface CartItem
-  extends Pick<
-    ProductI,
-    "_id" | "name" | "price" | "imageFile" | "properties"
-  > {
+  extends Pick<ProductI, "_id" | "name" | "price" | "imageFile"> {
   qty: number;
   hash?: string;
+  selectedProperty: Record<string, string>;
 }
 
 export interface CartState {
@@ -66,9 +64,9 @@ export const cartSlice = createSlice({
         state.cartItems = updatedItem;
       }
     },
-    removeFromCart: (state, action: PayloadAction<{ productId: string }>) => {
+    removeFromCart: (state, action: PayloadAction<{ hash: string }>) => {
       const filterdRemovedItem = state.cartItems.filter(
-        (item) => item._id !== action.payload.productId
+        (item) => item.hash !== action.payload.hash
       );
 
       window.localStorage.setItem(
