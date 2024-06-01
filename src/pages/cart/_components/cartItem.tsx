@@ -22,7 +22,7 @@ const CartItem = ({ item }: ICartItem) => {
   const handleQtyChange = (value: number) => {
     const copyQty = JSON.parse(JSON.stringify(item.qty)) + value;
     if (!copyQty) {
-      handleRemoveFromCart(item._id);
+      handleRemoveFromCart(item.hash!);
       return;
     }
 
@@ -38,8 +38,8 @@ const CartItem = ({ item }: ICartItem) => {
     }
   };
 
-  const handleRemoveFromCart = (productId: string) => {
-    dispatch(removeFromCart({ productId }));
+  const handleRemoveFromCart = (hash: string) => {
+    dispatch(removeFromCart({ hash }));
 
     toast.success("Rmoved from cart successfully");
   };
@@ -47,6 +47,7 @@ const CartItem = ({ item }: ICartItem) => {
   const maxValue = Math.max(...[LIMIT.MIN_QTY, 2, 3, 4, 5, LIMIT.MAX_QTY]);
 
   const disabled = item.qty === maxValue;
+  const selectedProperties = Object.entries(item.selectedProperty);
 
   return (
     <>
@@ -56,49 +57,25 @@ const CartItem = ({ item }: ICartItem) => {
           <div className="flex flex-col gap-2 ml-6 w-full">
             <h2 className="font-bold">{item.name}</h2>
             <div className="text-xs text-gray-500">
-              {item.properties.map((prop) => (
+              {selectedProperties?.map(([key, value]) => (
                 <div
                   className="flex justify-start gap-6  items-center"
-                  key={prop._id}
+                  key={key}
                 >
-                  <p className="font-medium">{prop.name}</p>
+                  <p className="font-medium">{key}</p>
                   <div className="flex gap-2 mb-2">
-                    {Array.isArray(prop.value)
-                      ? prop.value.map((v, i) => {
-                          if (v.startsWith("#")) {
-                            return (
-                              <span
-                                style={{
-                                  width: 12,
-                                  height: 12,
-                                  borderRadius: `50%`,
-                                  backgroundColor: v,
-                                  marginLeft: 4,
-                                  border: "1px solid black",
-                                }}
-                                key={v + i}
-                              />
-                            );
-                          }
-
-                          return (
-                            <span
-                              style={{
-                                marginLeft: 4,
-                                color: "white",
-                                padding: 2,
-                                border: "1px solid black",
-                                backgroundColor: "black",
-                                fontSize: 12,
-                                borderRadius: "50%",
-                              }}
-                              key={v + i}
-                            >
-                              {v}
-                            </span>
-                          );
-                        })
-                      : prop.value}
+                    {value && value.startsWith("#") ? (
+                      <div
+                        style={{
+                          backgroundColor: value,
+                        }}
+                        className="flex flex-col items-center justify-center rounded-md border-2 border-border bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                      />
+                    ) : (
+                      <div className="flex flex-col items-center font-bold text-pretty text-primary justify-center rounded-md border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-primary/8 peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
+                        {value}
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
@@ -114,7 +91,7 @@ const CartItem = ({ item }: ICartItem) => {
             <div className="font-bold w-12"> &#8377;{item.price}</div>
             <button
               className="ml-4"
-              onClick={() => handleRemoveFromCart(item._id)}
+              onClick={() => handleRemoveFromCart(item.hash!)}
             >
               <X />
             </button>
