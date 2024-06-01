@@ -73,28 +73,29 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <div
       className={cn(
-        "space-y-3 border-2 border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-lg transition-shadow duration-300 ease-in-out",
+        "space-y-3 border-2 flex flex-col gap-3 border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-lg transition-shadow duration-300 ease-in-out",
         className
       )}
       {...props}
     >
-      <div className="overflow-hidden rounded-md">
-        <img
-          src={product?.imageFile}
-          alt={product.name}
-          width={width}
-          height={height}
-          className={cn(
-            "h-auto w-auto object-cover transition-transform duration-300 hover:scale-105",
-            aspectRatio === "portrait" ? "aspect-[3/4]" : "aspect-square"
-          )}
-        />
+      <div className="flex-1">
+        <div className="overflow-hidden rounded-md">
+          <img
+            src={product?.imageFile}
+            alt={product.name}
+            width={width}
+            height={height}
+            className={cn(
+              "h-auto w-auto object-cover transition-transform duration-300 hover:scale-105",
+              aspectRatio === "portrait" ? "aspect-[3/4]" : "aspect-square"
+            )}
+          />
+        </div>
+        <div className="space-y-1 text-sm flex justify-between px-2 items-center">
+          <h3 className="font-medium leading-none">{product.name}</h3>
+          <p className="text-sm text-gray-600">Rs.{product.price}</p>
+        </div>
       </div>
-      <div className="space-y-1 text-sm flex justify-between px-2 items-center">
-        <h3 className="font-medium leading-none">{product.name}</h3>
-        <p className="text-sm text-gray-600">Rs.{product.price}</p>
-      </div>
-
       <div className="space-y-1 text-sm px-2">
         {product?.properties?.map((prop, i) => (
           <div key={prop._id} className="flex items-center">
@@ -146,7 +147,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           disabled={alreadyHasInCart}
           onClick={handleAddToCart}
           className={cn(
-            "flex items-center px-4 py-2 rounded-md font-medium transition-colors",
+            "flex items-center w-full px-4 py-2 rounded-md font-medium transition-colors",
             alreadyHasInCart
               ? "bg-gray-700 text-white"
               : "bg-blue-600 text-white hover:bg-blue-700"
