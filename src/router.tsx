@@ -4,6 +4,7 @@ import Dashboard from "./layouts/Dashboard";
 import NonAuth from "./layouts/NonAuth";
 import Root from "./layouts/Root";
 import CartPage from "./pages/cart/cart";
+import CheckoutInfoPage from "./pages/checkout/check-out-info";
 import HomePage from "./pages/HomePage";
 import { NotFound } from "./components/ui/not-found";
 import OrderPage from "./pages/order/order";
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
           {
             path: "/order",
             element: <OrderPage />,
+          },
+          {
+            path: "/checkout-info",
+            element: <CheckoutInfoPage />,
           },
         ],
       },
