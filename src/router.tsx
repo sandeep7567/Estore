@@ -34,6 +34,11 @@ export const router = createBrowserRouter([
             path: "/checkout-info",
             element: <CheckoutInfoPage />,
           },
+          {
+            path: "*",
+            element: <NotFound />,
+            errorElement: <NotFound />,
+          },
         ],
       },
       {
@@ -75,7 +80,13 @@ export const router = createBrowserRouter([
       {
         path: "*",
         element: <NotFound />,
+        errorElement: <NotFound />,
       },
     ],
+  },
+  {
+    path: "*",
+    element: <NotFound />,
+    errorElement: <NotFound />,
   },
 ]);
