@@ -78,19 +78,21 @@ const Header: React.FC<HeaderProps> = ({
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const dispatch = useAppDispatch();
-  const formmatedStore = stores?.map((store) => ({
-    label: store.name,
-    teams: [
-      {
-        name: store.name,
-        _id: store._id,
-      },
-    ],
-  }));
+  const formmatedStore = !!stores.length
+    ? stores?.map((store) => ({
+        label: store.name,
+        teams: [
+          {
+            name: store?.name,
+            _id: store?._id,
+          },
+        ],
+      }))
+    : [];
   type Team = (typeof formmatedStore)[number]["teams"][number];
   const [open, setOpen] = React.useState(false);
   const [selectedStore, setSelectedStore] = React.useState<Team>(
-    formmatedStore?.[0].teams?.[0]
+    formmatedStore?.[0]?.teams?.[0] ?? ""
   );
 
   useEffect(() => {
@@ -129,7 +131,7 @@ const Header: React.FC<HeaderProps> = ({
           className="flex text-primary items-center gap-2 font-semibold"
         >
           <Package2 className="h-6 w-6" />
-          <span>Store: {stores?.[0].name}</span>
+          <span>Store: {stores?.[0]?.name}</span>
         </Link>
       </div>
       <div className="w-full flex-1">
@@ -162,38 +164,39 @@ const Header: React.FC<HeaderProps> = ({
                   <CommandList>
                     <CommandInput placeholder="Search team..." />
                     <CommandEmpty>No team found.</CommandEmpty>
-                    {formmatedStore?.map((store) => (
-                      <CommandGroup key={store.label} heading={store.label}>
-                        {store?.teams?.map((team) => (
-                          <CommandItem
-                            key={team._id}
-                            onSelect={() => {
-                              setSelectedStore(team);
-                              setOpen(false);
-                            }}
-                            className="text-sm"
-                          >
-                            <Avatar className="mr-2 h-5 w-5">
-                              <AvatarImage
-                                src={`https://avatar.vercel.sh/${team._id}.png`}
-                                alt={team.name}
-                                className="grayscale"
+                    {!!formmatedStore?.length &&
+                      formmatedStore?.map((store) => (
+                        <CommandGroup key={store.label} heading={store.label}>
+                          {store?.teams?.map((team) => (
+                            <CommandItem
+                              key={team._id}
+                              onSelect={() => {
+                                setSelectedStore(team);
+                                setOpen(false);
+                              }}
+                              className="text-sm"
+                            >
+                              <Avatar className="mr-2 h-5 w-5">
+                                <AvatarImage
+                                  src={`https://avatar.vercel.sh/${team._id}.png`}
+                                  alt={team.name}
+                                  className="grayscale"
+                                />
+                                <AvatarFallback>SC</AvatarFallback>
+                              </Avatar>
+                              {team.name}
+                              <CheckIcon
+                                className={cn(
+                                  "ml-auto h-4 w-4",
+                                  selectedStore._id === team._id
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
                               />
-                              <AvatarFallback>SC</AvatarFallback>
-                            </Avatar>
-                            {team.name}
-                            <CheckIcon
-                              className={cn(
-                                "ml-auto h-4 w-4",
-                                selectedStore._id === team._id
-                                  ? "opacity-100"
-                                  : "opacity-0"
-                              )}
-                            />
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    ))}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      ))}
                   </CommandList>
                   <CommandSeparator />
                 </Command>
