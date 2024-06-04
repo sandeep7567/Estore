@@ -5,11 +5,11 @@ import {
 } from "@/redux/reducer/cartSlice";
 import { X } from "lucide-react";
 
+import { LIMIT } from "@/constants";
 import { useFetchProduct } from "@/hooks/product/useFetchProduct";
 import { useAppDispatch } from "@/hooks/redux";
 import { toast } from "sonner";
 import QtyChanger from "./qtyChanger";
-import { LIMIT } from "@/constants";
 
 interface ICartItem {
   item: CartItemsProps;
@@ -51,19 +51,25 @@ const CartItem = ({ item }: ICartItem) => {
 
   return (
     <>
-      <div className="grid grid-cols-2">
-        <div className="w-3/4 flex items-center">
-          <img src={item.imageFile} alt={item.name} width={100} height={100} />
-          <div className="flex flex-col gap-2 ml-6 w-full">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="w-3/4 flex flex-col md:flex-row gap-4 items-center">
+          <img
+            className="w-full md:w-1/2 lg:w-1/4"
+            src={item.imageFile}
+            alt={item.name}
+            width={100}
+            height={100}
+          />
+          <div className="flex flex-col gap-2 ml-0 md:ml-6 w-full">
             <h2 className="font-bold">{item.name}</h2>
-            <div className="text-xs text-gray-500">
+            <div className="text-xs flex flex-wrap text-gray-500">
               {selectedProperties?.map(([key, value]) => (
                 <div
-                  className="flex justify-start gap-6  items-center"
+                  className="flex justify-start gap-2 items-center"
                   key={key}
                 >
                   <p className="font-medium">{key}</p>
-                  <div className="flex gap-2 mb-2">
+                  <div className="flex mb-2 mr-2">
                     {value && value.startsWith("#") ? (
                       <div
                         style={{

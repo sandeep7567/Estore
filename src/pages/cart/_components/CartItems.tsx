@@ -44,12 +44,12 @@ const CartItems = () => {
       {cartItems.map((cartItem, i) => {
         return <CartItem key={i} item={cartItem} />;
       })}
-      <div className="flex justify-between items-center">
-        <span className="font-bold text-xl">
+      <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
+        <p className="font-bold text-base md:text-xl">
           Total Amount: &#8377;{totalAmount}
-        </span>
+        </p>
         {user !== null ? (
-          <Button asChild>
+          <Button asChild className="w-full md:w-fit">
             <Link to={`/checkout-info?storeId=${storeId}`}>
               Checkout
               <ArrowRight size={16} className="ml-2" />
