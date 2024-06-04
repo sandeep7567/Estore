@@ -115,7 +115,7 @@ const Header: React.FC<HeaderProps> = ({
             {navLinks.map((link, index) => (
               <NavLink
                 key={index}
-                to={`${link.to}/?storeId=${selectedStore._id}`}
+                to={`${link.to}?storeId=${selectedStore._id}`}
                 icon={link.icon}
                 label={link.label}
                 badgeCount={link.badgeCount}
