@@ -40,16 +40,17 @@ export const ProductsList: FC<ProductsListProps> = ({
   };
 
   return (
-    <div className="space-y-8 px-4">
+    <div className="space-y-8 px-0 md:px-4">
       <div className="flex justify-between items-center">
-        <h3 className="font-bold text-3xl">{title}</h3>
-        <div className="flex items-center gap-4">
-          <span>Total Docs:</span>
-          <span className="text-blue-600 font-bold">{pageInfo?.totalDocs}</span>
+        <h3 className="font-bold text-base md:text-3xl">{title}</h3>
+        <div className="flex items-center gap-0 md:gap-2">
+          <span className="text-xs w-fit md:text-base">Total Docs:</span>
+          <span className="text-blue-600 text-xs md:text-sm mr-1 font-bold">
+            {pageInfo?.totalDocs}
+          </span>
           <Button
             variant="outline"
             size="sm"
-            className="w-full md:w-fit"
             disabled={prevDisabled}
             onClick={handlePrevPage}
           >
@@ -59,7 +60,6 @@ export const ProductsList: FC<ProductsListProps> = ({
             {pageInfo?.pageIndex}/{pageInfo?.pageCount}
           </div>
           <Button
-            className="w-full md:w-fit"
             variant="outline"
             size="sm"
             disabled={nextDisabled}
